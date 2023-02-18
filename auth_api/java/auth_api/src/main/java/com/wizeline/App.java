@@ -3,6 +3,8 @@ package com.wizeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
+
 import static com.wizeline.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -10,7 +12,8 @@ public class App {
 
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
 
         log.info("Listening on: http://localhost:8000/");
 
@@ -19,6 +22,12 @@ public class App {
         get("/_health", App::routeRoot);
         post("/login", App::urlLogin, json());
         get("/protected", App::protect, json());
+
+        MysqlDBClient mysqlDBClient = MysqlDBClient.getInstance();
+        //System.out.println(mysqlDBClient.validationCredential("admin", "pwd"));
+        mysqlDBClient.validationCredential("admin", "secretpwd");
+        //mysqlDBClient.getData();
+        //System.out.println(Sha512.get_SHA_512_SecurePassword("secret", "F^S%QljSfV"));
     }
 
     public static Object routeRoot(spark.Request req, spark.Response res) throws Exception {
