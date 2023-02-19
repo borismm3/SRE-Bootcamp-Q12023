@@ -6,9 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Sha512 {
-    public static String get_SHA_512_SecurePassword(String input, String salt)
+    public static String get_SHA_512_SecurePassword(String pwd, String salt)
     {
-        String appendedSalt = input + salt;
+        String appendedSalt = pwd + salt;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] messageDigest = md.digest(appendedSalt.getBytes());

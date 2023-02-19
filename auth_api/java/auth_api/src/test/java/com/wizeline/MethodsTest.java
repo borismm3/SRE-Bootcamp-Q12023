@@ -12,6 +12,7 @@ class MethodsTest {
 
     @Test
     void accessData() {
-        Assertions.assertEquals("You are under protected data", Methods.accessData("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4ifQ.StuYX978pQGnCeeaj2E1yBYwQvZIodyDTCJWXdsxBGI"));
+        Methods.generateToken("admin", "secret");
+        Assertions.assertEquals("You are under protected data", Methods.accessData("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4ifQ.StuYX978pQGnCeeaj2E1yBYwQvZIodyDTCJWXdsxBGI"));
     }
 }

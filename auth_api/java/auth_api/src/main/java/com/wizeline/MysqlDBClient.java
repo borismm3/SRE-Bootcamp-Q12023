@@ -21,7 +21,7 @@ public class MysqlDBClient {
         }
     }
 
-    public static MysqlDBClient getInstance() throws SQLException {
+    public static MysqlDBClient getInstance() {
         if (instance == null) instance = new MysqlDBClient();
         return instance;
     }
@@ -42,47 +42,34 @@ public class MysqlDBClient {
         }
     }
 
-    public void validationCredential(String userSent, String pwdSent) {
+    public String validationCredential(String userSent, String pwdSent) {
         String table = "users";
         String column = "username";
         String querySelectFromUsers = String.format("SELECT * FROM %s WHERE %s='%s'", table, column, userSent);
-        //String pwdDb, saltDb, roleDb;
-        String pwdDb = "";
-        String saltDb = "";
-        String roleDb = "";
+        String pwdDb;
+        String saltDb;
         try {
             stmt = connection.createStatement();
             rs = stmt.executeQuery(querySelectFromUsers);
-            rs.next();
-            pwdDb = rs.getString("password");
-            saltDb = rs.getString("salt");
-
-            if (Sha512.get_SHA_512_SecurePassword(pwdSent, saltDb).equals(pwdDb)) {
-                System.out.println("CORRECT PASSWORD");
-            } else {
-                System.out.println("INCORRECT PASSWORD");
-            }
-
-
-
-//            System.out.println("username: " + rs.getString("username") +
-//                                "\npassword: " + rs.getString("password") +
-//                                "\nsalt: " + rs.getString("salt") +
-//                                "\nrole " + rs.getString("role"));
+            if (rs.next()) {
+                pwdDb = rs.getString("password");
+                saltDb = rs.getString("salt");
+                pwdSent = Sha512.get_SHA_512_SecurePassword(pwdSent, saltDb);
+                return pwdSent.equals(pwdDb) ? rs.getString("role") : null;
+            } else { return null; }
 
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            System.out.println("THAT USER DOESN'T EXISTS");
-            //return "USER DOESN'T EXISTS";
+            return null;
         } finally {
             if (rs != null) {
-                try { rs.close(); } catch (SQLException sqlEx) { }
+                try { rs.close(); } catch (SQLException ignored) { }
                 rs = null;
             }
             if (stmt != null) {
-                try { stmt.close(); } catch (SQLException sqlEx) { }
+                try { stmt.close(); } catch (SQLException ignored) { }
                 stmt = null;
             }
         }
