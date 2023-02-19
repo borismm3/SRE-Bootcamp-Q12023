@@ -26,22 +26,6 @@ public class MysqlDBClient {
         return instance;
     }
 
-    public void getData() {
-        try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM users");
-            while (rs.next()) {
-                System.out.println("username: " + rs.getString("username") +
-                                    "\nrole: " + rs.getString("role") +
-                                    "\npassword: " + rs.getString("password"));
-            }
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-    }
-
     public String validationCredential(String userSent, String pwdSent) {
         String table = "users";
         String column = "username";
