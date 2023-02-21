@@ -1,11 +1,9 @@
 package com.wizeline;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 public class Methods {
   static MysqlDBClient mysqlDBClient = MysqlDBClient.getInstance();

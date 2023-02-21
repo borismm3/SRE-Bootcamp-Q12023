@@ -10,14 +10,17 @@ public class MysqlDBClient {
     private String url = "jdbc:mysql://sre-bootcamp-selection-challenge.cabf3yhjqvmq.us-east-1.rds.amazonaws.com:3306/bootcamp_tht";
     private String username = "secret";
     private String password = "jOdznoyH6swQB9sTGdLUeeSrtejWkcw";
+    public boolean exceptionThrown = false;
 
     private MysqlDBClient() {
         try {
             connection = DriverManager.getConnection(url, username, password);
+            exceptionThrown = false;
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
+            exceptionThrown = true;
         }
     }
 
